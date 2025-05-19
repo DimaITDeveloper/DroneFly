@@ -15,6 +15,12 @@ public class DroneController : MonoBehaviour
 
     void Start()
     {
+
+        if (levelUI == null)
+        {
+            levelUI = FindObjectOfType<LevelCompleteUI>();
+        }
+
         rb = GetComponent<Rigidbody2D>();
 
         // Автоматическое определение границ камеры
@@ -48,7 +54,15 @@ public class DroneController : MonoBehaviour
         if (collision.collider.CompareTag("Obstacle"))
         {
             Debug.Log("Дрон столкнулся, смерть!");
-            SceneManager.LoadScene("LevelSelect");
+            if (levelUI != null)
+            {
+                levelUI.OnPlayerDied();
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // fallback
+            }
+
         }
     }
 
