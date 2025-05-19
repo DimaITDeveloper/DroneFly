@@ -3,19 +3,28 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
-    public void LoadLevel1()
+    public void LoadLevel(string levelName)
     {
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene(levelName);
     }
 
-    public void LoadLevel2()
+    public static bool IsLevelCompleted(int levelNumber)
     {
-        SceneManager.LoadScene("Level2");
+        return PlayerPrefs.GetInt("Level" + levelNumber + "_Completed", 0) == 1;
     }
 
-    public void LoadLevel3()
+    public static void IncrementAttempts(int levelNumber)
     {
-        SceneManager.LoadScene("Level3");
+        int currentAttempts = PlayerPrefs.GetInt("Level" + levelNumber + "_AttemptsTotal", 0);
+        PlayerPrefs.SetInt("Level" + levelNumber + "_AttemptsTotal", currentAttempts + 1);
+        PlayerPrefs.Save();
     }
+
+    public static int GetTotalAttempts(int levelNumber)
+    {
+        return PlayerPrefs.GetInt("Level" + levelNumber + "_AttemptsTotal", 0);
+    }
+
+
+
 }
-
