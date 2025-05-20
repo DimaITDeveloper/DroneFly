@@ -1,31 +1,51 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro; // если у тебя используется TextMeshPro для текста попыток
+using TMPro;
 
 public class LevelCompleteUI : MonoBehaviour
 {
     public GameObject winCanvas;
-    public TextMeshProUGUI attemptText;  // Привяжи в инспекторе UI элемент с текстом попытки
+    public TextMeshProUGUI attemptText;
 
     private static int currentAttempt = 0;
 
     void Start()
     {
-        // При заходе в уровень попытка 0
         UpdateAttemptText();
-
-        // Увеличиваем общее количество попыток в PlayerPrefs
         int levelNumber = SceneManager.GetActiveScene().buildIndex;
         LevelLoader.IncrementAttempts(levelNumber);
     }
 
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (attemptText == null)
+        {
+            attemptText = GameObject.Find("AttemptText")?.GetComponent<TextMeshProUGUI>();
+            if (attemptText != null)
+            {
+                UpdateAttemptText();
+            }
+            else
+            {
+                Debug.LogWarning("AttemptText не найден в новой сцене!");
+            }
+        }
+    }
+
     public void OnPlayerDied()
     {
-        // Увеличиваем текущую попытку на 1 при смерти
         currentAttempt++;
         UpdateAttemptText();
-
-        // Перезагружаем сцену
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -33,18 +53,17 @@ public class LevelCompleteUI : MonoBehaviour
     {
         currentAttempt = 0;
 
-        // Сохраняем факт прохождения уровня
         int levelNumber = SceneManager.GetActiveScene().buildIndex;
         PlayerPrefs.SetInt("Level" + levelNumber + "_Completed", 1);
         PlayerPrefs.Save();
 
+        CoinManager.instance.OnLevelCompleted();
+
         SceneManager.LoadScene("LevelSelect");
     }
 
-
     public void GoToLevelSelect()
     {
-        // При выходе сбрасываем текущие попытки
         currentAttempt = 0;
         SceneManager.LoadScene("LevelSelect");
     }
@@ -61,7 +80,6 @@ public class LevelCompleteUI : MonoBehaviour
             Debug.LogWarning("attemptText не назначен!");
         }
     }
-
 
     public void ShowWinPanel()
     {
