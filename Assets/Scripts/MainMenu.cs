@@ -18,4 +18,9 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Shop");
     }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }

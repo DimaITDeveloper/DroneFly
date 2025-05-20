@@ -71,12 +71,20 @@ public class DroneController : MonoBehaviour
         if (other.CompareTag("Finish"))
         {
             rb.velocity = Vector2.zero;
-            levelUI.ShowWinPanel();
-            this.enabled = false;
-            levelUI.OnLevelCompleted();
+
+            int levelNumber = SceneManager.GetActiveScene().buildIndex;
+            PlayerPrefs.SetInt("Level" + levelNumber + "_Completed", 1);
+            PlayerPrefs.Save();
+
+            if (levelUI != null)
+            {
+                levelUI.ShowWinPanel();
+            }
+
+            this.enabled = false; // отключаем управление дроном
         }
-
-
     }
+
+
 
 }

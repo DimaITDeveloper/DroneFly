@@ -908,7 +908,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  offsetX: 2
+  speed: 2
+  yOffset: 0
 --- !u!114 &659947573
 MonoBehaviour:
   m_ObjectHideFlags: 0

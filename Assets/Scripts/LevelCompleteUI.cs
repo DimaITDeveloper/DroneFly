@@ -67,4 +67,9 @@ public class LevelCompleteUI : MonoBehaviour
     {
         winCanvas.SetActive(true);
     }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
