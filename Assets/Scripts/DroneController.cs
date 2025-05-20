@@ -73,6 +73,7 @@ public class DroneController : MonoBehaviour
             rb.velocity = Vector2.zero;
             levelUI.ShowWinPanel();
             this.enabled = false;
+            levelUI.OnLevelCompleted();
         }
 
 

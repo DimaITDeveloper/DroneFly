@@ -31,11 +31,16 @@ public class LevelCompleteUI : MonoBehaviour
 
     public void OnLevelCompleted()
     {
-        // При прохождении сбросим текущие попытки (опционально)
         currentAttempt = 0;
+
+        // Сохраняем факт прохождения уровня
+        int levelNumber = SceneManager.GetActiveScene().buildIndex;
+        PlayerPrefs.SetInt("Level" + levelNumber + "_Completed", 1);
+        PlayerPrefs.Save();
 
         SceneManager.LoadScene("LevelSelect");
     }
+
 
     public void GoToLevelSelect()
     {
