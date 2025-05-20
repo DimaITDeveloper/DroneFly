@@ -1,17 +1,23 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraAutoScroll : MonoBehaviour
 {
-    public Transform target;      // Игрок (птичка)
-    public float speed = 2f;      // Скорость движения камеры
-    public float yOffset = 0f;    // Смещение по Y
+    public float scrollSpeed = 2f;  // Скорость движения камеры по X
+    public float yOffset = 0f;      // Смещение по Y (если следим за игроком)
+    public Transform target;        // Игрок (можно null)
 
     void LateUpdate()
     {
-        float newX = transform.position.x + speed * Time.deltaTime;
-        float newY = target != null ? target.position.y + yOffset : 0;
+        float newX = transform.position.x + scrollSpeed * Time.deltaTime;
 
-        transform.position = new Vector3(newX, newY, -10);
+        float newY = yOffset;
+
+        // Если есть игрок — следим по Y
+        if (target != null)
+        {
+            newY = target.position.y + yOffset;
+        }
+
+        transform.position = new Vector3(newX, newY, -10f);
     }
 }
-
