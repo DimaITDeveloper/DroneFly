@@ -121,7 +121,7 @@ public class CoinManager : MonoBehaviour
     {
         if (coinText != null)
         {
-            coinText.text = $"Монет: {totalCoins} (+{sessionCoins})";  // Обновляем текст
+            coinText.text = $"Монет: {totalCoins}";  // Обновляем текст
         }
         else
         {
