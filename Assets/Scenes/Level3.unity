@@ -130,6 +130,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1945478716519183720, guid: ea70b15f9a2c0f2408805d3309521e11, type: 3}
+      propertyPath: coinID
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 2447622486043797580, guid: ea70b15f9a2c0f2408805d3309521e11, type: 3}
       propertyPath: m_Name
       value: Coin (17)
@@ -320,6 +324,7 @@ GameObject:
   - component: {fileID: 302028348}
   - component: {fileID: 302028347}
   - component: {fileID: 302028346}
+  - component: {fileID: 302028349}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -401,6 +406,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &302028349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302028345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f0285b157120c439d63d9892db8c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollSpeed: 2
+  yOffset: 0
+  target: {fileID: 0}
 --- !u!1 &338440737
 GameObject:
   m_ObjectHideFlags: 0
@@ -932,7 +952,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winCanvas: {fileID: 1784595517}
   attemptText: {fileID: 0}
-  coinStatsText: {fileID: 0}
 --- !u!4 &496402261
 Transform:
   m_ObjectHideFlags: 0
@@ -1297,6 +1316,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1945478716519183720, guid: ea70b15f9a2c0f2408805d3309521e11, type: 3}
+      propertyPath: coinID
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 2447622486043797580, guid: ea70b15f9a2c0f2408805d3309521e11, type: 3}
       propertyPath: m_Name
       value: Coin (16)
