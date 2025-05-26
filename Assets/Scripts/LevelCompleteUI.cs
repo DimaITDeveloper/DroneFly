@@ -49,6 +49,11 @@ public class LevelCompleteUI : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void ShowWinPanel()
+    {
+        winCanvas.SetActive(true);
+    }
+
     public void OnLevelCompleted()
     {
         currentAttempt = 0;
@@ -79,10 +84,5 @@ public class LevelCompleteUI : MonoBehaviour
         {
             Debug.LogWarning("attemptText не назначен!");
         }
-    }
-
-    public void ShowWinPanel()
-    {
-        winCanvas.SetActive(true);
     }
 }
