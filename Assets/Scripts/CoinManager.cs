@@ -1,6 +1,7 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class CoinManager : MonoBehaviour
 {
@@ -8,17 +9,22 @@ public class CoinManager : MonoBehaviour
 
     public int sessionCoins = 0;
     public int totalCoins = 0;
+
     public TMP_Text coinText;
+    public TMP_Text totalCoinText;
 
     private int currentLevel;
-    private List<int> sessionCollectedCoinIDs = new();  // временный список ID монет
+    private List<int> sessionCollectedCoinIDs = new();
+    private int levelCoinCount = 0;
+
+    private HashSet<int> countedCoinIDs = new(); // РЈРЅРёРєР°Р»СЊРЅС‹Рµ РјРѕРЅРµС‚С‹ СѓСЂРѕРІРЅСЏ
 
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);  // Этот объект будет сохраняться между сценами
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -26,33 +32,81 @@ public class CoinManager : MonoBehaviour
             return;
         }
 
-        currentLevel = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+        currentLevel = SceneManager.GetActiveScene().buildIndex;
         totalCoins = PlayerPrefs.GetInt("TotalCoins", 0);
-        UpdateUI();
     }
 
     void Start()
     {
+        TryFindCoinText();
+        UpdateUI();
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        currentLevel = scene.buildIndex;
+
+        sessionCoins = 0;
+        sessionCollectedCoinIDs.Clear();
+        countedCoinIDs.Clear();
+        levelCoinCount = 0; 
+
+        StartCoroutine(DelayedFindAndUpdateUI());
+    }
+
+
+    private System.Collections.IEnumerator DelayedFindAndUpdateUI()
+    {
+        yield return new WaitForSeconds(0.1f); // РїРѕРґРѕР¶РґР°С‚СЊ РїРѕРєР° СЃС†РµРЅР° РїСЂРѕРіСЂСѓР·РёС‚СЃСЏ
+        TryFindCoinText();
+        UpdateUI();
+    }
+
+    private void TryFindCoinText()
+    {
         if (coinText == null)
         {
-            coinText = FindObjectOfType<TMP_Text>();  // Ищем текстовый объект в сцене
-            if (coinText == null)
-            {
-                Debug.LogError("coinText не найден!");
-            }
+            GameObject obj = GameObject.Find("CoinText");
+            if (obj != null)
+                coinText = obj.GetComponent<TMP_Text>();
         }
-        UpdateUI();  // Обновляем UI при старте сцены
+
+        if (totalCoinText == null)
+        {
+            GameObject obj = GameObject.Find("TotalCoinText");
+            if (obj != null)
+                totalCoinText = obj.GetComponent<TMP_Text>();
+        }
+    }
+
+    public void RegisterCoinInLevel(int coinID)
+    {
+        if (!countedCoinIDs.Contains(coinID))
+        {
+            countedCoinIDs.Add(coinID);
+            levelCoinCount++;
+            UpdateUI();
+        }
     }
 
     public void AddCoin(int coinID)
     {
-        // Проверяем: не собрана ли уже и не собрана ли в этой попытке
         if (IsCoinCollected(currentLevel, coinID) || sessionCollectedCoinIDs.Contains(coinID))
             return;
 
         sessionCoins++;
         sessionCollectedCoinIDs.Add(coinID);
-        UpdateUI();  // Обновляем UI после добавления монеты
+        UpdateUI();
     }
 
     public void ConfirmCoins()
@@ -66,12 +120,11 @@ public class CoinManager : MonoBehaviour
 
             totalCoins += sessionCoins;
             SaveTotalCoins();
-
             SaveLevelCoins(currentLevel, GetLevelCollectedCoins(currentLevel) + sessionCoins);
 
             sessionCoins = 0;
             sessionCollectedCoinIDs.Clear();
-            UpdateUI();  // Обновляем UI после подтверждения монет
+            UpdateUI();
         }
     }
 
@@ -79,7 +132,7 @@ public class CoinManager : MonoBehaviour
     {
         sessionCoins = 0;
         sessionCollectedCoinIDs.Clear();
-        UpdateUI();  // Обновляем UI при сбросе сессии
+        UpdateUI();
     }
 
     public bool IsCoinCollected(int level, int coinID)
@@ -113,19 +166,19 @@ public class CoinManager : MonoBehaviour
         totalCoins -= amount;
         if (totalCoins < 0) totalCoins = 0;
         SaveTotalCoins();
-        UpdateUI();  // Обновляем UI после траты монет
+        UpdateUI();
     }
 
-    // Сделаем метод UpdateUI() публичным, чтобы его можно было вызывать из других скриптов
     public void UpdateUI()
     {
         if (coinText != null)
         {
-            coinText.text = $"Монет: {totalCoins}";  // Обновляем текст
+            coinText.text = $"{sessionCoins}/{levelCoinCount}";
         }
-        else
+
+        if (totalCoinText != null)
         {
-            Debug.LogWarning("coinText не назначен!");  // Логируем предупреждение, если coinText не привязан
+            totalCoinText.text = $"{totalCoins}";
         }
     }
 
@@ -134,23 +187,22 @@ public class CoinManager : MonoBehaviour
         totalCoins = 0;
         sessionCoins = 0;
         sessionCollectedCoinIDs.Clear();
-        PlayerPrefs.SetInt("TotalCoins", 0);  // Обнуляем сохраненные монеты
+
+        PlayerPrefs.DeleteAll(); // РѕС‡РёС‰Р°РµРј Р’РЎРЃ: СЃРѕР±СЂР°РЅРЅС‹Рµ РјРѕРЅРµС‚С‹ Рё РѕР±С‰РµРµ
         PlayerPrefs.Save();
-        UpdateUI();  // Обновляем UI после сброса
+
+        UpdateUI();
     }
 
     public void UpdateTotalCoins()
     {
-        // Обновляем сохраненные монеты и UI
         PlayerPrefs.SetInt("TotalCoins", totalCoins);
         PlayerPrefs.Save();
-        UpdateUI();  // Обновляем UI после обновления монет
+        UpdateUI();
     }
 
-    // Новый метод, который можно вызвать после прохождения уровня
     public void OnLevelCompleted()
     {
-        ConfirmCoins();  // Подтверждаем монеты
-        // Можно добавить дополнительные действия, например, загрузку следующего уровня
+        ConfirmCoins();
     }
 }
