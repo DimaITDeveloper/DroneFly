@@ -3,12 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - back
   - Water
   - UI
   - 
@@ -49,4 +50,10 @@ TagManager:
     locked: 0
   - name: Game
     uniqueID: 1865542701
+    locked: 0
+  - name: back
+    uniqueID: 3871393017
+    locked: 0
+  - name: New Layer 5
+    uniqueID: 210989535
     locked: 0
