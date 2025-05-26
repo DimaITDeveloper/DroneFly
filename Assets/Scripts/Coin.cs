@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Coin : MonoBehaviour
 {
@@ -6,21 +7,41 @@ public class Coin : MonoBehaviour
 
     void Start()
     {
-        int level = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+        int level = SceneManager.GetActiveScene().buildIndex;
 
-        // ≈сли монета уже собрана Ч уничтожаем
-        if (CoinManager.instance != null && CoinManager.instance.IsCoinCollected(level, coinID))
+        if (CoinManager.instance != null)
         {
-            Destroy(gameObject);
+            if (CoinManager.instance.IsCoinCollected(level, coinID))
+            {
+                Destroy(gameObject); // ”же собрана Ч уничтожаем
+            }
+            else
+            {
+                CoinManager.instance.RegisterCoinInLevel(coinID); 
+            }
         }
     }
+
+
+
+
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            CoinManager.instance.AddCoin(coinID);
+            if (CoinManager.instance != null)
+            {
+                CoinManager.instance.AddCoin(coinID);
+            }
+            else
+            {
+                Debug.LogError("CoinManager.instance is NULL! ”бедись, что он есть в сцене.");
+            }
+
             Destroy(gameObject);
         }
     }
+
 }
