@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1945478716519183720, guid: ea70b15f9a2c0f2408805d3309521e11, type: 3}
       propertyPath: coinID
-      value: 17
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 2447622486043797580, guid: ea70b15f9a2c0f2408805d3309521e11, type: 3}
       propertyPath: m_Name
@@ -1318,7 +1318,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1945478716519183720, guid: ea70b15f9a2c0f2408805d3309521e11, type: 3}
       propertyPath: coinID
-      value: 16
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 2447622486043797580, guid: ea70b15f9a2c0f2408805d3309521e11, type: 3}
       propertyPath: m_Name
