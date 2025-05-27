@@ -15,12 +15,12 @@ GameObject:
   - component: {fileID: 8135475504664886878}
   - component: {fileID: 4936762594664190175}
   m_Layer: 0
-  m_Name: Drone
+  m_Name: Drone 2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1784025388753816748
 Transform:
   m_ObjectHideFlags: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 210927503
   m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1404464317, guid: dd3a53cd9f7fe704ea87592b84f0b0d7, type: 3}
+  m_Sprite: {fileID: 1717521275, guid: a407949f322c8c945ab95b53b7da2997, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -171,7 +171,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.4, y: 0.28}
+    oldSize: {x: 0.64, y: 0.51}
     newSize: {x: 0.4, y: 0.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
