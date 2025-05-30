@@ -64,7 +64,7 @@ public class LevelCompleteUI : MonoBehaviour
 
         CoinManager.instance.OnLevelCompleted();
 
-        SceneManager.LoadScene("LevelSelect");
+        ShowWinPanel();
     }
 
     public void GoToLevelSelect()
